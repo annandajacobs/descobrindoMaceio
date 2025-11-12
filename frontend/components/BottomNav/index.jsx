@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { usePathname, router } from "expo-router";
 
 export function BottomNav() {
@@ -16,10 +16,10 @@ export function BottomNav() {
   }, [pathname]);
 
   const icones = [
-    { nome: "home", componente: Ionicons, icone: "home-outline", rota: "/" },
-    { nome: "mapa", componente: Ionicons, icone: "map-outline", rota: "/mapa" },
-    { nome: "favoritos", componente: FontAwesome5, icone: "heart", rota: "/favoritos" },
-    { nome: "perfil", componente: Ionicons, icone: "person-outline", rota: "/perfil" },
+    { nome: "home", componente: Ionicons, icone: "home", rota: "/" },
+    { nome: "mapa", componente: Ionicons, icone: "map", rota: "/mapa" },
+    { nome: "favoritos", componente: Ionicons, icone: "heart", rota: "/favoritos" },
+    { nome: "perfil", componente: Ionicons, icone: "person", rota: "/perfil" },
   ];
 
   return (
