@@ -1,20 +1,32 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-const favoritosSchema = new mongoose.Schema({
-  usuario: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // referência ao usuário
-    required: true
+const FavoritosSchema = new mongoose.Schema(
+  {
+    usuario_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario",
+      required: true,
+      unique: true, // cada usuário terá somente um documento de favoritos
+    },
+
+    categorias: {
+      Praias: {
+        type: [String], // lista de IDs de locais
+        default: [],
+      },
+      "Passeios Culturais": {
+        type: [String],
+        default: [],
+      },
+      Lazer: {
+        type: [String],
+        default: [],
+      },
+    },
   },
-  lugar: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Place', // referência ao local favoritado
-    required: true
-  },
-  data_favoritado: {
-    type: Date,
-    default: Date.now
+  {
+    timestamps: true,
   }
-});
+);
 
-module.exports = mongoose.model('Favoritos', favoritosSchema, 'favoritos');
+export default mongoose.model("Favoritos", FavoritosSchema, "favoritos");
