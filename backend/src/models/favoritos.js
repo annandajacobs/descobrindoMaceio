@@ -6,12 +6,12 @@ const FavoritosSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Usuario",
       required: true,
-      unique: true, // cada usuário terá somente um documento de favoritos
+      unique: true, 
     },
 
     categorias: {
       Praias: {
-        type: [String], // lista de IDs de locais
+        type: [String],
         default: [],
       },
       "Passeios Culturais": {
