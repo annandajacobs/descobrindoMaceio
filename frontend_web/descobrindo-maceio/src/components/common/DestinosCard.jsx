@@ -1,19 +1,23 @@
 import React from 'react';
 import { Heart, MapPin } from 'lucide-react';
 import { useApp } from '../../hooks/useApp';
+import { useNavigate } from "react-router-dom";
 
-const DestinationCard = ({ destino, onClick }) => {
+const DestinationCard = ({ destino }) => {
+  const navigate = useNavigate();
   const { favorites, toggleFavorite } = useApp();
   const isFavorite = favorites.includes(destino._id);
+  
+  if (!destino) return null;
 
   return (
     <div
-      onClick={() => onClick(destino)}
+      onClick={() => navigate(`/detalhes/${destino._id}`)}
       className="relative rounded-2xl overflow-hidden shadow-lg cursor-pointer transform hover:scale-105 transition-all group"
     >
       <img
-        src={destino.image}
-        alt={destino.name}
+        src={destino.fotos}
+        alt={destino.nome_local}
         className="w-full h-64 object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
@@ -32,10 +36,10 @@ const DestinationCard = ({ destino, onClick }) => {
       </button>
 
       <div className="absolute bottom-0 left-0 right-0 p-5">
-        <h3 className="text-white font-bold text-xl mb-1">{destino.name}</h3>
+        <h3 className="text-white font-bold text-xl mb-1">{destino.nome}</h3>
         <p className="text-white/90 text-sm flex items-center gap-1">
           <MapPin size={14} />
-          {destino.location} • {destino.distance}
+          {destino.nome_local}
         </p>
       </div>
     </div>

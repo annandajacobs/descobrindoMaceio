@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getCategorias, getLugaresByCategoria } from "../services/destination.service";
 import DestinationCard from "../components/common/DestinosCard";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const [categorias, setCategorias] = useState([]);
@@ -52,7 +53,9 @@ export default function HomePage() {
             {(lugaresPorCategoria[cat._id] || []).length > 0 ? (
               lugaresPorCategoria[cat._id]
                 .filter(Boolean) // remove possíveis undefined
-                .map((lugar) => <DestinationCard key={lugar._id} destino={lugar} />)
+                .map((lugar) => (
+                  <DestinationCard key={lugar._id} destino={lugar} />
+                ))
             ) : (
               <p className="text-gray-500">Nenhum lugar encontrado.</p>
             )}

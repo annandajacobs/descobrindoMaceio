@@ -35,3 +35,17 @@ export const listarLugaresPorCategoria = async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar lugares" });
   }
 };
+
+export const buscarLugarPorId = async (req, res) => {
+    try {
+        const lugar = await Lugar.findById(req.params.id);
+
+        if (!lugar) {
+            return res.status(404).json({ error: "Lugar não encontrado" });
+        }
+
+        res.json(lugar);
+    } catch (err) {
+        res.status(500).json({ error: "Erro ao buscar o lugar" });
+    }
+};
