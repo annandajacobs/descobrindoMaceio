@@ -1,8 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { getCategorias, getLugaresByCategoria } from "../services/destination.service";
-import DestinationCard from "../components/common/DestinosCard";
-import { Link } from "react-router-dom";
+import Carousel from "../components/common/Carousel";
+import WeatherTideWidget from "../components/features/WeatherTideWid";
+import { Compass, Loader2 } from "lucide-react";
+import "../styles/home.css";
+import "../components/common/Carousel.css";
 
 export default function HomePage() {
   const [categorias, setCategorias] = useState([]);
@@ -20,7 +23,6 @@ export default function HomePage() {
         for (const categoria of cats) {
           try {
             const lugares = await getLugaresByCategoria(categoria._id);
-            // Garante que seja sempre um array
             result[categoria._id] = Array.isArray(lugares) ? lugares : [];
           } catch (err) {
             result[categoria._id] = [];
@@ -39,29 +41,59 @@ export default function HomePage() {
     carregarDados();
   }, []);
 
-  if (loading) return <p className="text-center mt-8">Carregando...</p>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Loader2 className="loading-icon" size={48} />
+        <p className="loading-text">Carregando destinos incríveis...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Categorias</h1>
+    <div className="home-page">
 
-      {categorias.map((cat) => (
-        <div key={cat._id} className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4">{cat.nome_categoria}</h2>
+      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+        <WeatherTideWidget />
+      </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {(lugaresPorCategoria[cat._id] || []).length > 0 ? (
-              lugaresPorCategoria[cat._id]
-                .filter(Boolean) // remove possíveis undefined
-                .map((lugar) => (
-                  <DestinationCard key={lugar._id} destino={lugar} />
-                ))
-            ) : (
-              <p className="text-gray-500">Nenhum lugar encontrado.</p>
-            )}
-          </div>
-        </div>
-      ))}
+      <div className="categories-container">
+        {categorias.map((cat) => {
+          const lugares = lugaresPorCategoria[cat._id] || [];
+          const temLugares = lugares.length > 0;
+
+          return (
+            <section key={cat._id} className="category-section">
+
+              <div className="category-header">
+                <div>
+                  <h2 className="category-title">{cat.nome_categoria}</h2>
+                  <p className="category-count">
+                    {lugares.length} {lugares.length === 1 ? 'lugar' : 'lugares'}
+                  </p>
+                </div>
+              </div>
+
+
+              {temLugares ? (
+                <Carousel 
+                  items={lugares.filter(Boolean)} 
+                  onItemClick={(lugar) => {
+
+                    console.log('Lugar clicado:', lugar);
+                  }}
+                />
+              ) : (
+                <div className="empty-category">
+                  <p className="empty-text">
+                    Nenhum lugar encontrado nesta categoria ainda.
+                  </p>
+                </div>
+              )}
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
 }

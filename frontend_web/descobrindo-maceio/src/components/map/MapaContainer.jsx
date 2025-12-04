@@ -10,7 +10,7 @@ const MapContainer = ({ places, userLocation, loading }) => {
       <LeafletMap
         center={userLocation || defaultCenter}
         zoom={userLocation ? 13 : 12}
-        style={{ width: "85%", height: "70vh", borderRadius: "15px"}}
+        style={{ width: "100%", height: "70vh", borderRadius: "15px"}}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 

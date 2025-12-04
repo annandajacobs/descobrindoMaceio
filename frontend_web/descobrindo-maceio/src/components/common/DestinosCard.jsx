@@ -1,7 +1,8 @@
 import React from 'react';
-import { Heart, MapPin } from 'lucide-react';
+import { Heart, MapPin, ArrowRight } from 'lucide-react';
 import { useApp } from '../../hooks/useApp';
 import { useNavigate } from "react-router-dom";
+import './DestinosCard.css';
 
 const DestinationCard = ({ destino }) => {
   const navigate = useNavigate();
@@ -11,36 +12,47 @@ const DestinationCard = ({ destino }) => {
   if (!destino) return null;
 
   return (
-    <div
-      onClick={() => navigate(`/detalhes/${destino._id}`)}
-      className="relative rounded-2xl overflow-hidden shadow-lg cursor-pointer transform hover:scale-105 transition-all group"
-    >
-      <img
-        src={destino.fotos}
-        alt={destino.nome_local}
-        className="w-full h-64 object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+    <div className="destination-card">
+
+      <div 
+        className="destination-image-wrapper"
+        onClick={() => navigate(`/detalhes/${destino._id}`)}
+      >
+        <img
+          src={destino.fotos}
+          alt={destino.nome_local}
+          className="destination-image"
+        />
+        <div className="image-overlay"></div>
+        
+        <div className="hover-overlay">
+          <div className="view-details-btn">
+            <span>Ver Detalhes</span>
+            <ArrowRight size={18} />
+          </div>
+        </div>
+      </div>
 
       <button
         onClick={(e) => {
           e.stopPropagation();
           toggleFavorite(destino._id);
         }}
-        className="absolute top-4 right-4 w-12 h-12 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition shadow-lg z-10"
+        className="favorite-btn"
+        aria-label={isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
       >
         <Heart
-          size={22}
-          className={isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}
+          size={20}
+          className={isFavorite ? 'favorite-active' : 'favorite-inactive'}
         />
       </button>
 
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <h3 className="text-white font-bold text-xl mb-1">{destino.nome}</h3>
-        <p className="text-white/90 text-sm flex items-center gap-1">
-          <MapPin size={14} />
-          {destino.nome_local}
-        </p>
+      <div className="destination-content">
+        <h3 className="destination-title">{destino.nome}</h3>
+        <div className="destination-location">
+          <MapPin size={16} />
+          <span>{destino.nome_local}</span>
+        </div>
       </div>
     </div>
   );

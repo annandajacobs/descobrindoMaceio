@@ -2,14 +2,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getLocalById } from "../services/locais.service";
-import { Heart, ArrowLeft } from "lucide-react";
-
+import { Heart, ArrowLeft, MapPin, Clock, Phone, ChevronRight } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
 import L from "leaflet";
+import "../styles/details.css";
 
-// Ícone padrão do Leaflet (correção necessária no React)
+
 const defaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
@@ -39,113 +38,106 @@ const DetailsPage = () => {
     carregar();
   }, [id]);
 
-  if (loading) return <p className="text-center mt-8">Carregando...</p>;
-  if (!local) return <p className="text-center mt-8">Local não encontrado.</p>;
+  if (loading) {
+    return (
+      <div className="details-loading">
+        <div className="loading-spinner"></div>
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
+  if (!local) {
+    return (
+      <div className="details-error">
+        <p>Local não encontrado.</p>
+        <button onClick={() => navigate(-1)} className="back-btn">
+          Voltar
+        </button>
+      </div>
+    );
+  }
 
   const latitude = local?.localizacao?.coordinates?.[1];
   const longitude = local?.localizacao?.coordinates?.[0];
-
-
-  const hasCoords =
-  latitude !== undefined &&
-  longitude !== undefined &&
-  !isNaN(latitude) &&
-  !isNaN(longitude)
-
-  // Pega as imagens a partir da segunda (índice 1)
+  const hasCoords = latitude !== undefined && longitude !== undefined && !isNaN(latitude) && !isNaN(longitude);
   const carouselImages = local.fotos?.slice(1) || [];
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    // Aqui você pode adicionar lógica para salvar no localStorage ou backend
   };
 
   return (
-    <div className="max-w-5xl mx-auto pb-12">
-      {/* FOTO PRINCIPAL COM BOTÕES */}
-      <div className="relative w-full h-96 mb-8 overflow-hidden">
+    <div className="details-page">
+ 
+      <div className="hero-image-container">
         <img
-          src={local.fotos?.slice(0)}
+          src={local.fotos?.[0]}
           alt={local.nome_lugar}
-          className="w-full h-full object-cover"
+          className="hero-image"
         />
         
-        {/* Botão Voltar */}
-        <button
-          onClick={() => navigate(-1)}
-          className="absolute top-4 left-4 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition"
-        >
-          <ArrowLeft className="w-5 h-5 text-gray-700" />
+
+        <div className="hero-overlay"></div>
+
+
+        <button onClick={() => navigate(-1)} className="floating-btn back-button">
+          <ArrowLeft size={20} />
         </button>
 
-        {/* Botão Favoritar */}
-        <button
-          onClick={toggleFavorite}
-          className="absolute top-4 right-4 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition"
-        >
+        <button onClick={toggleFavorite} className="floating-btn favorite-button">
           <Heart 
-            className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-700'}`}
+            size={20}
+            className={isFavorite ? 'filled' : ''}
           />
         </button>
 
-        {/* Título sobreposto */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-8">
-          <h1 className="text-4xl font-bold text-white tracking-wide uppercase">
-            {local.nome_lugar}
-          </h1>
+        <div className="hero-title-container">
+          <h1 className="hero-title">{local.nome_lugar}</h1>
         </div>
       </div>
 
-      <div className="px-6">
-        {/* CARROSSEL DE FOTOS */}
+      <div className="content-container">
+
         {carouselImages.length > 0 && (
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800 uppercase tracking-wide">
-                Fotos
-              </h2>
-              <button className="text-blue-600 text-lg font-semibold hover:underline">
-                →
+          <section className="section">
+            <div className="section-header">
+              <h2 className="section-title">Galeria de Fotos</h2>
+              <button className="see-more-btn">
+                Ver todas
+                <ChevronRight size={18} />
               </button>
             </div>
             
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+            <div className="photos-carousel">
               {carouselImages.map((img, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-64 h-48 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer"
-                >
+                <div key={index} className="carousel-item">
                   <img
                     src={img}
                     alt={`${local.nome_lugar} - foto ${index + 2}`}
-                    className="w-full h-full object-cover"
+                    className="carousel-image"
                   />
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
-        {/* DETALHES */}
-        <div className="mb-10">
-          <h2 className="text-xl font-bold text-gray-800 uppercase tracking-wide mb-4">
-            Detalhes
-          </h2>
-          <p className="text-gray-700 leading-relaxed text-justify">
-            {local.descricao}
-          </p>
-        </div>
+        <section className="section">
+          <h2 className="section-title">Sobre o Local</h2>
+          <p className="description-text">{local.descricao}</p>
+        </section>
 
-        {/* COMO CHEGAR */}
-        <div className="mb-10">
-          <h2 className="text-xl font-bold text-gray-800 uppercase tracking-wide mb-4">
-            Como Chegar
-          </h2>
-
+        <section className="section">
+          <h2 className="section-title">Localização</h2>
+          
           {!hasCoords ? (
-            <p className="text-gray-500">Coordenadas não disponíveis.</p>
+            <div className="map-unavailable">
+              <MapPin size={48} />
+              <p>Coordenadas não disponíveis</p>
+            </div>
           ) : (
-            <div className="w-full h-80 rounded-lg shadow-lg overflow-hidden">
+            <div className="map-container">
               <MapContainer
                 center={[latitude, longitude]}
                 zoom={15}
@@ -159,35 +151,47 @@ const DetailsPage = () => {
               </MapContainer>
             </div>
           )}
-        </div>
+        </section>
 
-        {/* INFORMAÇÕES */}
-        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-          <h2 className="text-xl font-bold text-gray-800 uppercase tracking-wide mb-4">
-            Informações
-          </h2>
-
-          <div className="space-y-3">
-            <div>
-              <span className="font-semibold text-gray-800">Endereço:</span>
-              <span className="text-gray-700 ml-2">{local.endereco}</span>
+        <section className="section">
+          <h2 className="section-title">Informações Úteis</h2>
+          
+          <div className="info-card">
+            <div className="info-item">
+              <div className="info-icon-wrapper">
+                <MapPin size={20} />
+              </div>
+              <div className="info-content">
+                <span className="info-label">Endereço</span>
+                <span className="info-value">{local.endereco}</span>
+              </div>
             </div>
 
             {local.funcionamento && (
-              <div>
-                <span className="font-semibold text-gray-800">Funcionamento:</span>
-                <span className="text-gray-700 ml-2">{local.funcionamento}</span>
+              <div className="info-item">
+                <div className="info-icon-wrapper">
+                  <Clock size={20} />
+                </div>
+                <div className="info-content">
+                  <span className="info-label">Funcionamento</span>
+                  <span className="info-value">{local.funcionamento}</span>
+                </div>
               </div>
             )}
 
             {local.contato && (
-              <div>
-                <span className="font-semibold text-gray-800">Contato:</span>
-                <span className="text-gray-700 ml-2">{local.contato}</span>
+              <div className="info-item">
+                <div className="info-icon-wrapper">
+                  <Phone size={20} />
+                </div>
+                <div className="info-content">
+                  <span className="info-label">Contato</span>
+                  <span className="info-value">{local.contato}</span>
+                </div>
               </div>
             )}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

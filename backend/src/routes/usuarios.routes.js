@@ -8,6 +8,6 @@ router.get("/", listarUsuarios);
 router.get("/:id", buscaUsuarioPorId);
 router.delete("/:id", deletarUsuario);
 
-router.post("/login", loginUsuario)
+router.post("/login", loginUsuario);
 
 export default router;

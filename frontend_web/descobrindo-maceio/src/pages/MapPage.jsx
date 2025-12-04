@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
 import MapContainer from "../components/map/MapaContainer";
 import CategoryTabs from "../components/map/CategoryTabs";
+import PageTitle from "../components/common/PageTitle";
+import { Map } from "lucide-react";
 import { getAllPlaces } from "../services/place.service";
 import { calcularDistanciaKm, calcularTempo } from "../services/distance.service";
 import "leaflet/dist/leaflet.css";
@@ -75,8 +77,10 @@ const MapPage = () => {
   };
 
   return (
+    <>
+    <PageTitle title="Mapa" icon={Map} />
+    
     <div className="map-page">
-      <h1 className="map-title">Mapa</h1>
 
       <CategoryTabs selected={category} onSelect={handleCategoryChange} />
 
@@ -102,6 +106,7 @@ const MapPage = () => {
         ))}
       </div>
     </div>
+  </>
   );
 };
 

@@ -6,6 +6,9 @@ import DetailsPage from "./pages/DetailsPage";
 import { AppProvider } from "./context/AppContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MapPage from "./pages/MapPage";
+import ProfilePage from "./pages/ProfilePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 export default function App() {
   return (
@@ -15,16 +18,18 @@ export default function App() {
 
           <div className="app-container">
             <Routes>
-              {/* Página Inicial */}
+
               <Route path="/" element={<HomePage />} />
 
               <Route path="/detalhes/:id" element={<DetailsPage />} />
 
-              {/* Páginas futuras */}
               <Route path="/favoritos" element={<FavoritesPage />} />
+              
               <Route path="/mapa" element={<MapPage />} />
-              <Route path="/categorias" element={<p>Categorias</p>} />
-              <Route path="/perfil" element={<p>Perfil</p>} />
+ 
+              <Route path="/perfil" element={<ProfilePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/cadastro" element={<RegisterPage />} />
             </Routes>
           </div>
       </BrowserRouter>

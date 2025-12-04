@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import DestinationCard from './DestinosCard';
+import './Carousel.css';
 
 const Carousel = ({ items, onItemClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerPage = 4;
+  
+  const getItemsPerPage = () => {
+    if (window.innerWidth >= 1280) return 4; // xl
+    if (window.innerWidth >= 1024) return 3; // lg
+    if (window.innerWidth >= 640) return 2;  // sm
+    return 1;
+  };
+
+  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setItemsPerPage(getItemsPerPage());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const nextSlide = () => {
     setCurrentIndex((prev) =>
@@ -20,30 +38,54 @@ const Carousel = ({ items, onItemClick }) => {
 
   const visibleItems = items.slice(currentIndex, currentIndex + itemsPerPage);
 
+  const displayItems = [...visibleItems];
+  while (displayItems.length < itemsPerPage && items.length > 0) {
+    displayItems.push(items[displayItems.length % items.length]);
+  }
+
   return (
-    <div className="relative">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {visibleItems.map((item) => (
-          <DestinationCard key={item.id} destination={item} onClick={onItemClick} />
+    <div className="carousel-container">
+      <div className="carousel-grid">
+        {displayItems.map((item, index) => (
+          <DestinationCard 
+            key={`${item._id || item.id}-${index}`} 
+            destino={item} 
+            onClick={onItemClick} 
+          />
         ))}
       </div>
 
       {items.length > itemsPerPage && (
-        <div className="flex justify-center gap-4 mt-6">
+        <div className="carousel-controls">
           <button
             onClick={prevSlide}
             disabled={currentIndex === 0}
-            className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="carousel-btn"
+            aria-label="Anterior"
           >
-            <ChevronLeft size={24} className="text-gray-700" />
+            <ChevronLeft size={24} />
           </button>
           <button
             onClick={nextSlide}
             disabled={currentIndex + itemsPerPage >= items.length}
-            className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="carousel-btn"
+            aria-label="Próximo"
           >
-            <ChevronRight size={24} className="text-gray-700" />
+            <ChevronRight size={24} />
           </button>
+        </div>
+      )}
+
+      {items.length > itemsPerPage && (
+        <div className="carousel-indicators">
+          {Array.from({ length: Math.ceil(items.length / itemsPerPage) }).map((_, idx) => (
+            <div
+              key={idx}
+              className={`indicator-dot ${
+                Math.floor(currentIndex / itemsPerPage) === idx ? 'active' : ''
+              }`}
+            />
+          ))}
         </div>
       )}
     </div>
