@@ -1,5 +1,5 @@
 export const categoriaMap = {
-  "691249111d398fea080b5482": "Praias",
-  "691249581d398fea080b5485": "Passeios Culturais",
-  "691249831d398fea080b5487": "Lazer",
+  "693868e04861ffe419030997": "Praias",
+  "693869714861ffe4190309a6": "Passeios Culturais",
+  "6938699a4861ffe4190309aa": "Lazer",
 };
