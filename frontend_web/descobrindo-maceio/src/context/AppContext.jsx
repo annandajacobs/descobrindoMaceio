@@ -4,15 +4,10 @@ import { getFavoritos, addFavorito, removeFavorito } from "../services/favoritos
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/auth.service.js";
 import { getLocalById } from "../services/locais.service";
+import { categoriaMap } from "../constantes/categorias";
 
 const AppContext = createContext();
 export default AppContext;
-
-const categoriaMap = {
-  "691249111d398fea080b5482": "Praias",
-  "691249581d398fea080b5485": "Passeios Culturais",
-  "691249831d398fea080b5487": "Lazer",
-};
 
 export const AppProvider = ({ children }) => {
   const navigate = useNavigate();

@@ -6,6 +6,7 @@ import { getAllPlaces } from "../services/place.service";
 import PageTitle from '../components/common/PageTitle';
 import "../styles/favorites.css";
 import FavoriteCard from '../components/common/FavoriteCard';
+import { categoriaMap } from "../constantes/categorias";
 
 const FavoritesPage = () => {
   const { favorites, user, loadFavorites, isLoadingFavorites } = useContext(AppContext);
@@ -42,12 +43,6 @@ const FavoritesPage = () => {
 
   const favoriteDestinations = lugares.filter(lugar => {
     const categoriaId = lugar.categoria?._id || lugar.categoria?.$oid || lugar.categoria;
-    
-    const categoriaMap = {
-      "691249111d398fea080b5482": "Praias",
-      "691249581d398fea080b5485": "Passeios Culturais",
-      "691249831d398fea080b5487": "Lazer",
-    };
     
     const categoriaNome = categoriaMap[categoriaId];
     const itemId = lugar._id;
