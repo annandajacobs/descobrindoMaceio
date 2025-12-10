@@ -2,6 +2,17 @@ import { api } from "../services/api.js";
 
 export const authService = {
 
+  register: async (nome, email, senha) => {
+    try {
+      const response = await api.post('/api/usuarios', { nome, email, senha });
+
+      return response.data;
+
+    } catch (error) {
+      throw error.response?.data || { error: "Erro ao cadastrar usuário" };
+    }
+  },
+
   login: async (email, senha) => {
     try {
       const response = await api.post('/api/usuarios/login', { email, senha });

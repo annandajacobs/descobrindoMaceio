@@ -6,7 +6,7 @@ import "../styles/login.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // ← ADICIONADO
+  const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     senha: '',
@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // ← ADICIONADO: Mostrar mensagem se veio de redirecionamento
+
   useEffect(() => {
     if (location.state?.message) {
       setError(location.state.message);
@@ -44,7 +44,6 @@ const LoginPage = () => {
     try {
       await authService.login(formData.email, formData.senha);
       
-      // ← ADICIONADO: Redirecionar para página anterior se existir
       const redirectUrl = localStorage.getItem('redirectAfterLogin');
       if (redirectUrl) {
         localStorage.removeItem('redirectAfterLogin');

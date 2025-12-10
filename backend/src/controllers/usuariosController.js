@@ -96,7 +96,6 @@ export const atualizarUsuario = async (req, res) => {
     const { id } = req.params;
     const dados = req.body;
 
-    // Se vier senha no body, criptografa antes de salvar
     if (dados.senha) {
       const salt = await bcrypt.genSalt(10);
       dados.senha = await bcrypt.hash(dados.senha, salt);
