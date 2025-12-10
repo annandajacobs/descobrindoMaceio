@@ -60,7 +60,7 @@ export const authService = {
 
   updateUser: async (id, data) => {
     try {
-      const response = await api.put(`/usuarios/${id}`, data);
+      const response = await api.put(`api/usuarios/${id}`, data);
 
       const updatedUser = response.data;
 
@@ -76,7 +76,7 @@ export const authService = {
 
   deleteUser: async (id) => {
     try {
-      await api.delete(`/usuarios/${id}`);
+      await api.delete(`api/usuarios/${id}`);
 
       localStorage.removeItem("user");
       localStorage.removeItem("token");

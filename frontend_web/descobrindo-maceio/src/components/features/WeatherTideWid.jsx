@@ -22,8 +22,8 @@ const WeatherTideWidget = () => {
         setWeatherData(weather.current);
 
         const tideResponse = await fetch(
-          "http://localhost:5000/api/tide?lat=-9.6658&lon=-35.7353&estado=al"
-        );
+          `${import.meta.env.VITE_API_URL}/api/tide?lat=-9.6658&lon=-35.7353&estado=al`
+        )
 
         const tide = await tideResponse.json();
         const hours = tide.data?.[0]?.months?.[0]?.days?.[0]?.hours || [];
