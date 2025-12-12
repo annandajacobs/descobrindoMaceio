@@ -75,4 +75,4 @@ docker compose up --build -d
 
 ---
 
-Desenvolvido com ❤️ e ☕ em Maceió
+Desenvolvido com ☕ em Maceió
