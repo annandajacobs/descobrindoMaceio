@@ -2,13 +2,21 @@
 
 Aplicação web explorar os melhores destinos turísticos de Maceió, construída com React, Vite e Tailwind CSS.
 
-## Tecnologias
+## Tecnologias Front
 
 - **React 18** - Biblioteca JavaScript para interfaces
 - **Vite** - Build tool super rápido
 - **Tailwind CSS** - Framework CSS utility-first
 - **Lucide React** - Ícones modernos
 - **LocalStorage** - Persistência de favoritos
+
+## Tecnologias Back
+
+  - **Node.js**
+  - **Express**
+  - **Banco de dados - MongoDB**
+  - **Mongoose**
+  - **JWT Auth**
 
 ## Instalação e Configuração
 
@@ -36,7 +44,7 @@ npx tailwindcss init -p
 npm install lucide-react
 ```
 
-### Passo 3: Rodar o projeto
+### Passo 3: Rodar o projeto como dev
 
 ```bash
 # Rodar o Back:
