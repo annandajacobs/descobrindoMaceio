@@ -39,7 +39,30 @@ npm install lucide-react
 ### Passo 3: Rodar o projeto
 
 ```bash
+# Rodar o Back:
+
+# 1. Entre na pasta
+cd backend
+
+# 2. Rode o projeto
 npm run dev
+
+
+# Rodar o front
+
+# 1. Entre na pasta
+cd frontend_web
+cd descobrindo-maceio
+
+# 2. Rode o projeto
+npm run dev
+
+```
+
+### Passo 3: Rodar projeto com o Docker (Inicia Front e Back ao mesmo tempo)
+
+```bash
+docker compose up --build -d
 ```
 
 ## Páginas
